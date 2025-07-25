@@ -1,0 +1,702 @@
+[
+  {
+    "id": "sample_000",
+    "text": "Increase message weight need road hundred whatever. Some usually can organization measure.\nMiddle raise nation our. State degree perhaps summer themselves.",
+    "language": "en",
+    "language_name": "English",
+    "image_path": "images/sample_000.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_001",
+    "text": "De mauvais distinguer lever proposer camarade. Cour même nous celui bouche lisser.",
+    "language": "fr",
+    "language_name": "French",
+    "image_path": "images/sample_001.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_002",
+    "text": "Später Onkel mal Fahrrad so.\nMit bauen zurück wenn Zug Spiel schön. Unten lesen weit Minute Schuh packen Lehrerin. Angst den Hund ist verlieren. Wohl auch reiten machen reiten Wort sagen.",
+    "language": "de",
+    "language_name": "German",
+    "image_path": "images/sample_002.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_003",
+    "text": "Quia ullam eos ratione reprehenderit aspernatur. Assumenda cum aliquid.\nOfficiis totam similique natus fugiat. Porro quia quasi hic blanditiis. Asperiores nemo ea dolorem minus.",
+    "language": "es",
+    "language_name": "Spanish",
+    "image_path": "images/sample_003.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_004",
+    "text": "自然语言处理技术越来越成熟。",
+    "language": "zh",
+    "language_name": "Chinese",
+    "image_path": "images/sample_004.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_005",
+    "text": "Nature site lead Mrs. Unit happy beat beautiful.\nRadio seem report fine including listen across five. Woman billion before approach seem. Mind position agreement service result explain.",
+    "language": "en",
+    "language_name": "English",
+    "image_path": "images/sample_005.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_006",
+    "text": "Taire quatre arme fois mot faveur reposer. Rencontrer rapidement douze puis distance fumer. Croix puis endormir coin rassurer corps.",
+    "language": "fr",
+    "language_name": "French",
+    "image_path": "images/sample_006.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_007",
+    "text": "Da machen ja Zimmer steigen bekommen böse. Bei Schwester Haus nass.\nEinfach kalt gerade tot Haus alt Vater. Gesicht schon schauen Sohn schwimmen merken gibt.",
+    "language": "de",
+    "language_name": "German",
+    "image_path": "images/sample_007.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_008",
+    "text": "Atque suscipit commodi in mollitia aspernatur quod. Aliquam repellendus atque voluptates alias voluptates.",
+    "language": "es",
+    "language_name": "Spanish",
+    "image_path": "images/sample_008.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_009",
+    "text": "自然语言处理技术越来越成熟。",
+    "language": "zh",
+    "language_name": "Chinese",
+    "image_path": "images/sample_009.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_010",
+    "text": "Listen against include up. These writer protect together. Law for mother speech phone. Serious factor outside seem.\nEstablish middle alone site fight. Maybe miss teacher fear.",
+    "language": "en",
+    "language_name": "English",
+    "image_path": "images/sample_010.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_011",
+    "text": "Soi presque nez. Geste lequel commander sang.\nDresser vraiment lier fine théâtre trembler. Certain seuil important bureau. Jusque personne jeunesse précipiter.",
+    "language": "fr",
+    "language_name": "French",
+    "image_path": "images/sample_011.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_012",
+    "text": "Wort Onkel bald fliegen auch. Schwimmen wichtig ihr.\nSetzen Essen schwarz Schwester. Dauern zu Baum danach springen schicken. Anfangen vier Mädchen grün packen Tier verkaufen.",
+    "language": "de",
+    "language_name": "German",
+    "image_path": "images/sample_012.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_013",
+    "text": "Quod reprehenderit facere quam maxime. Laudantium molestiae placeat minus. Quod a perferendis sint voluptate.",
+    "language": "es",
+    "language_name": "Spanish",
+    "image_path": "images/sample_013.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_014",
+    "text": "自然语言处理技术越来越成熟。",
+    "language": "zh",
+    "language_name": "Chinese",
+    "image_path": "images/sample_014.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_015",
+    "text": "Worker would piece suggest. Wind along find apply. Brother sense although stand nearly.",
+    "language": "en",
+    "language_name": "English",
+    "image_path": "images/sample_015.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_016",
+    "text": "Depuis service reprendre lisser mode inquiétude. Ferme âge rouge car près. Je droit parfois chance suivant vivre centre.",
+    "language": "fr",
+    "language_name": "French",
+    "image_path": "images/sample_016.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_017",
+    "text": "Winter halbe Tag aus lernen am. Nein letzte Zug mehr.\nZiehen bekommen Geld nimmt See aber heute da.\nGelb neu vier fünf Auge. Noch gar helfen Wald Ding Jahr.",
+    "language": "de",
+    "language_name": "German",
+    "image_path": "images/sample_017.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_018",
+    "text": "Eius quaerat atque sapiente eveniet harum accusamus.",
+    "language": "es",
+    "language_name": "Spanish",
+    "image_path": "images/sample_018.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_019",
+    "text": "自然语言处理技术越来越成熟。",
+    "language": "zh",
+    "language_name": "Chinese",
+    "image_path": "images/sample_019.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_020",
+    "text": "Suggest father technology forward direction. Pick make listen have. Home protect before money college who.\nSong book meet pay movie single. Official develop style. Note form current development.",
+    "language": "en",
+    "language_name": "English",
+    "image_path": "images/sample_020.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_021",
+    "text": "Inutile vide marcher rouge. Souvent maintenant charger tard.\nDonc pain fixer dans permettre. Haut soulever changement. Delà tendre voler salut.",
+    "language": "fr",
+    "language_name": "French",
+    "image_path": "images/sample_021.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_022",
+    "text": "Buch auch nennen Opa ließ rechnen Wort. Hören was bekommen Küche fünf.\nMehr weit natürlich anfangen Glas. Finden Bild machen Teller.\nVor Wetter unten rund.",
+    "language": "de",
+    "language_name": "German",
+    "image_path": "images/sample_022.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_023",
+    "text": "Magnam similique error. Magni ratione dicta inventore autem vero perspiciatis reprehenderit. Sapiente est aspernatur repellat odio accusantium doloribus.",
+    "language": "es",
+    "language_name": "Spanish",
+    "image_path": "images/sample_023.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_024",
+    "text": "自然语言处理技术越来越成熟。",
+    "language": "zh",
+    "language_name": "Chinese",
+    "image_path": "images/sample_024.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_025",
+    "text": "Church buy themselves worker resource believe entire score. Area artist around message different voice. Table Republican sometimes movie environmental general center.",
+    "language": "en",
+    "language_name": "English",
+    "image_path": "images/sample_025.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_026",
+    "text": "Repas projet briller même aimer. Autorité embrasser sérieux village vérité partie oiseau. Appartement papier peine travailler rompre.",
+    "language": "fr",
+    "language_name": "French",
+    "image_path": "images/sample_026.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_027",
+    "text": "Freude müssen dich weg weil ein. Sollen kaufen Wetter hin nämlich.\nKrank Maus dürfen besser danach nächste. Unten ließ Jahr essen hier Ball Tür. Mädchen dick schön bauen nach Stunde merken zwischen.",
+    "language": "de",
+    "language_name": "German",
+    "image_path": "images/sample_027.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_028",
+    "text": "Sunt sapiente natus. Nisi ullam eum optio corrupti accusamus. Ad quod ad.",
+    "language": "es",
+    "language_name": "Spanish",
+    "image_path": "images/sample_028.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_029",
+    "text": "自然语言处理技术越来越成熟。",
+    "language": "zh",
+    "language_name": "Chinese",
+    "image_path": "images/sample_029.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_030",
+    "text": "Prove candidate game Republican whatever include. Value ball spend simple true. Car end get nor charge use democratic.",
+    "language": "en",
+    "language_name": "English",
+    "image_path": "images/sample_030.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_031",
+    "text": "Guère colère route doucement. Groupe consulter que posséder partager tapis rideau. Encore installer cela yeux police.\nAngoisse grain rose. Billet déclarer témoin naturel horizon fine sens.",
+    "language": "fr",
+    "language_name": "French",
+    "image_path": "images/sample_031.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_032",
+    "text": "Laufen Auto Schüler im ihr die Fußball. Seit Geburtstag hat los unter halten selbst.\nSohn Finger weit unten sicher weinen dunkel er. Los steigen sieben als ganz.",
+    "language": "de",
+    "language_name": "German",
+    "image_path": "images/sample_032.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_033",
+    "text": "Voluptatum exercitationem vel illum asperiores eveniet beatae. Impedit dicta corporis quis. Omnis dicta facere expedita ipsam excepturi mollitia.",
+    "language": "es",
+    "language_name": "Spanish",
+    "image_path": "images/sample_033.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_034",
+    "text": "自然语言处理技术越来越成熟。",
+    "language": "zh",
+    "language_name": "Chinese",
+    "image_path": "images/sample_034.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_035",
+    "text": "Adult manage shake town us. Small form trial create. Say behind lot can.\nCatch kid someone too. Next from for evidence almost.",
+    "language": "en",
+    "language_name": "English",
+    "image_path": "images/sample_035.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_036",
+    "text": "Songer dent prétendre vieillard soi ouvert. Frapper fusil inutile quelqu'un.\nDire étendue gens poste fait représenter. Reconnaître début âme fier ci delà trembler passage.",
+    "language": "fr",
+    "language_name": "French",
+    "image_path": "images/sample_036.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_037",
+    "text": "Mein deshalb ruhig Zeit. Tot weit Bett sonst vergessen. Hin verkaufen heute klettern warm. Wollen ist Tante Junge gern Welt nicht kann.",
+    "language": "de",
+    "language_name": "German",
+    "image_path": "images/sample_037.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_038",
+    "text": "Consectetur dolorem accusamus nostrum modi. Corporis minus libero quae quae alias.\nRerum explicabo quos dolorum animi quia. Nam minima eaque culpa culpa dolorem.",
+    "language": "es",
+    "language_name": "Spanish",
+    "image_path": "images/sample_038.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_039",
+    "text": "自然语言处理技术越来越成熟。",
+    "language": "zh",
+    "language_name": "Chinese",
+    "image_path": "images/sample_039.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_040",
+    "text": "By care create large. During probably keep phone simple. Nor opportunity program smile describe how. Point best smile else.\nOut box because away generation. Now myself several doctor.",
+    "language": "en",
+    "language_name": "English",
+    "image_path": "images/sample_040.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_041",
+    "text": "Erreur certain repousser pénétrer réfléchir histoire départ inviter. Quelqu'Un empire bois neuf garder seuil penser.",
+    "language": "fr",
+    "language_name": "French",
+    "image_path": "images/sample_041.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_042",
+    "text": "Schüler schreiben Name heute Baum.\nStark zusammen Gott Ding las leise glücklich. Etwas gewinnen dick alle neben Wissen endlich wo.",
+    "language": "de",
+    "language_name": "German",
+    "image_path": "images/sample_042.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_043",
+    "text": "Iste beatae quo id. Recusandae officiis ut dolorem blanditiis dolorum deserunt dolorem.",
+    "language": "es",
+    "language_name": "Spanish",
+    "image_path": "images/sample_043.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_044",
+    "text": "自然语言处理技术越来越成熟。",
+    "language": "zh",
+    "language_name": "Chinese",
+    "image_path": "images/sample_044.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_045",
+    "text": "Crime key red. Enough method talk daughter. Sea audience catch across. Foreign consumer reveal economic start information.",
+    "language": "en",
+    "language_name": "English",
+    "image_path": "images/sample_045.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_046",
+    "text": "Partir dehors exposer cabinet rose placer docteur. Produire tu fonder.\nIntention gauche liberté avancer trop espèce. Retrouver étudier manier sortir vide choix aucun.",
+    "language": "fr",
+    "language_name": "French",
+    "image_path": "images/sample_046.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_047",
+    "text": "Wissen vorbei glücklich wie Ferien dunkel. Klein kochen ging Bauer bekommen holen Bett war.",
+    "language": "de",
+    "language_name": "German",
+    "image_path": "images/sample_047.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_048",
+    "text": "Quasi distinctio debitis nihil. Odio odit necessitatibus eius.\nIpsam quis quis nulla doloremque. Nemo ad odio.\nItaque incidunt natus dolorem expedita. Doloremque asperiores placeat laudantium animi.",
+    "language": "es",
+    "language_name": "Spanish",
+    "image_path": "images/sample_048.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sample_049",
+    "text": "自然语言处理技术越来越成熟。",
+    "language": "zh",
+    "language_name": "Chinese",
+    "image_path": "images/sample_049.png",
+    "bbox": [
+      10,
+      10,
+      500,
+      50
+    ],
+    "confidence": 0.95
+  }
+]

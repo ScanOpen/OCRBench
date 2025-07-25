@@ -1,0 +1,2 @@
+# This file ensures the images directory is tracked in git
+# Test images will be generated here during evaluation 

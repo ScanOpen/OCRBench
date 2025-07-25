@@ -1,0 +1,54 @@
+OCR Model Evaluation Summary
+==================================================
+
+Overall Statistics:
+--------------------
+
+EasyOCR:
+  Total Images: 848
+  Successful Images: 848
+  Success Rate: 100.00%
+  Average Processing Time: 0.1276s
+  Average Memory Used: 0.00MB
+
+Tesseract:
+  Total Images: 848
+  Successful Images: 848
+  Success Rate: 100.00%
+  Average Processing Time: 0.3347s
+  Average Memory Used: 0.00MB
+
+PaddleOCR:
+  Total Images: 848
+  Successful Images: 848
+  Success Rate: 100.00%
+  Average Processing Time: 0.3574s
+  Average Memory Used: 0.00MB
+
+
+Accuracy Metrics:
+--------------------
+
+EasyOCR:
+  Character Error Rate (CER): 0.1092 ± 0.2580
+  Word Error Rate (WER): 0.2229 ± 0.4162
+  Accuracy: 0.7771 ± 0.4162
+  Precision: 0.9062 ± 0.2420
+  Recall: 0.9032 ± 0.2432
+  F1 Score: 0.9027 ± 0.2419
+
+Tesseract:
+  Character Error Rate (CER): 0.1958 ± 0.3688
+  Word Error Rate (WER): 0.2712 ± 0.4446
+  Accuracy: 0.7288 ± 0.4446
+  Precision: 0.8199 ± 0.3544
+  Recall: 0.8255 ± 0.3479
+  F1 Score: 0.8191 ± 0.3520
+
+PaddleOCR:
+  Character Error Rate (CER): 1.0000 ± 0.0000
+  Word Error Rate (WER): 1.0000 ± 0.0000
+  Accuracy: 0.0000 ± 0.0000
+  Precision: 0.0671 ± 0.0401
+  Recall: 0.3304 ± 0.1899
+  F1 Score: 0.1080 ± 0.0593

@@ -1,0 +1,160 @@
+# OCR Evaluation Configuration
+
+# Model configurations
+models:
+  tesseract:
+    enabled: true
+    language: "eng"
+    page_segmentation_mode: 6
+    ocr_engine_mode: 3
+    config: "--psm 6"
+    
+  paddleocr:
+    enabled: true
+    language: "en"
+    use_gpu: false
+    use_angle_cls: true
+    det_db_thresh: 0.3
+    det_db_box_thresh: 0.5
+    det_db_unclip_ratio: 1.6
+    
+  easyocr:
+    enabled: true
+    languages: ["en"]
+    gpu: false
+    recog_network: "standard"
+    detector_network: "craft"
+    quantize: true
+
+# Evaluation settings
+evaluation:
+  # Text normalization
+  normalize_text: true
+  lowercase: true
+  remove_punctuation: false
+  
+  # Metrics to calculate
+  metrics:
+    - cer
+    - wer
+    - accuracy
+    - precision
+    - recall
+    - f1_score
+    - edit_distance
+    - length_ratio
+  
+  # Performance tracking
+  track_performance: true
+  track_memory: true
+  
+  # Error analysis
+  error_analysis:
+    enabled: true
+    detailed_errors: true
+    error_categories: true
+
+# Dataset settings
+datasets:
+  # ICDAR 2013 - Printed Text Dataset
+  icdar2013:
+    name: "ICDAR 2013"
+    description: "Printed text dataset from ICDAR 2013 competition"
+    path: "data/datasets/icdar2013"
+    type: "printed"
+    languages: ["english"]
+    ground_truth_format: "txt"
+    ground_truth_file: "gt.txt"
+    supported_formats:
+      - ".png"
+      - ".jpg"
+      - ".jpeg"
+      - ".bmp"
+      - ".tiff"
+    preprocessing:
+      resize: false
+      max_width: 1920
+      max_height: 1080
+      denoise: false
+      enhance_contrast: false
+      
+  # IAM Handwriting Database
+  iam:
+    name: "IAM Handwriting Database"
+    description: "Handwritten text dataset from IAM"
+    path: "data/datasets/iam"
+    type: "handwritten"
+    languages: ["english"]
+    ground_truth_format: "txt"
+    ground_truth_file: "lines.txt"
+    supported_formats:
+      - ".png"
+      - ".jpg"
+      - ".jpeg"
+      - ".bmp"
+      - ".tiff"
+    preprocessing:
+      resize: false
+      max_width: 1920
+      max_height: 1080
+      denoise: true
+      enhance_contrast: true
+      
+  # Synthetic Mixed-Language Dataset
+  multilingual:
+    name: "Synthetic Mixed-Language Dataset"
+    description: "Synthetic dataset with mixed languages"
+    path: "data/datasets/multilingual"
+    type: "mixed"
+    languages: ["english", "french", "german", "spanish", "chinese"]
+    ground_truth_format: "json"
+    supported_formats:
+      - ".png"
+      - ".jpg"
+      - ".jpeg"
+      - ".bmp"
+      - ".tiff"
+    preprocessing:
+      resize: false
+      max_width: 1920
+      max_height: 1080
+      denoise: false
+      enhance_contrast: false
+
+# Output settings
+output:
+  # Report formats
+  formats:
+    - json
+    - txt
+    - html
+  
+  # Visualization settings
+  plots:
+    enabled: true
+    save_plots: true
+    plot_format: "png"
+    dpi: 300
+  
+  # Detailed results
+  save_detailed_results: true
+  save_error_analysis: true
+
+# Logging
+logging:
+  level: "INFO"
+  save_logs: true
+  log_file: "evaluation.log"
+
+# Performance settings
+performance:
+  # Parallel processing
+  parallel_processing: false
+  max_workers: 4
+  
+  # Memory management
+  memory_limit: "4GB"
+  
+  # GPU settings
+  use_gpu: false
+  gpu_memory_fraction: 0.8 

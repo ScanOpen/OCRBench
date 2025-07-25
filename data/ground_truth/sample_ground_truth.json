@@ -1,0 +1,12 @@
+{
+  "sample_text_1.png": "Hello World! This is a sample text for OCR evaluation.",
+  "sample_text_2.png": "The quick brown fox jumps over the lazy dog.",
+  "sample_text_3.png": "1234567890 ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+  "sample_text_4.png": "Special characters: !@#$%^&*()_+-=[]{}|;':\",./<>?",
+  "sample_text_5.png": "Mixed case: Hello WORLD, this is a TEST.",
+  "sample_text_6.png": "Numbers and text: 42 is the answer to life, the universe, and everything.",
+  "sample_text_7.png": "Longer text with multiple sentences. This is the second sentence. And here is the third sentence.",
+  "sample_text_8.png": "Technical terms: Machine Learning, Artificial Intelligence, Deep Learning",
+  "sample_text_9.png": "Punctuation test: Hello, world! How are you? I'm doing well.",
+  "sample_text_10.png": "Empty space test:   Multiple   spaces   between   words   "
+} 
