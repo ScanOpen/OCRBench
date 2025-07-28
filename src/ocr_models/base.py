@@ -32,15 +32,8 @@ class BaseOCRModel(ABC):
     
     def _initialize_memory_tracker(self):
         """Initialize memory tracker lazily to avoid circular imports."""
-        try:
-            from ..evaluation.memory_tracker import create_memory_tracker
-            self.memory_tracker = create_memory_tracker(
-                enable_tracemalloc=True,
-                enable_memory_profiler=True
-            )
-        except ImportError:
-            # Fallback to basic memory tracking if memory tracker is not available
-            self.memory_tracker = None
+        # Memory tracking has been disabled - always set to None
+        self.memory_tracker = None
     
     @abstractmethod
     def initialize(self) -> None:
@@ -64,7 +57,7 @@ class BaseOCRModel(ABC):
     
     def recognize_text_with_metrics(self, image: np.ndarray) -> Dict[str, Any]:
         """
-        Recognize text and return performance metrics with enhanced memory tracking.
+        Recognize text and return performance metrics.
         
         Args:
             image: Input image as numpy array
@@ -75,11 +68,33 @@ class BaseOCRModel(ABC):
         if not self.is_initialized:
             self.initialize()
         
-        # Use enhanced memory tracking if available, otherwise fallback to basic tracking
-        if self.memory_tracker is not None:
-            return self._recognize_text_with_enhanced_memory_tracking(image)
-        else:
-            return self._recognize_text_with_basic_memory_tracking(image)
+        # Record start time
+        start_time = time.time()
+        
+        # Perform OCR
+        try:
+            text = self.recognize_text(image)
+            success = True
+            error = None
+        except Exception as e:
+            text = ""
+            success = False
+            error = str(e)
+        
+        # Record end time
+        end_time = time.time()
+        processing_time = end_time - start_time
+        
+        result = {
+            'text': text,
+            'processing_time': processing_time,
+            'success': success
+        }
+        
+        if not success:
+            result['error'] = error
+            
+        return result
     
     def _recognize_text_with_enhanced_memory_tracking(self, image: np.ndarray) -> Dict[str, Any]:
         """Recognize text with enhanced memory tracking."""

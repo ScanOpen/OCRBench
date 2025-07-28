@@ -15,7 +15,6 @@ from tqdm import tqdm
 
 from ..ocr_models import BaseOCRModel
 from .metrics import calculate_all_metrics, aggregate_metrics
-from .memory_tracker import MemoryTracker, get_system_memory_info
 
 
 class OCREvaluator:
@@ -35,10 +34,6 @@ class OCREvaluator:
         self.results = {}
         self.config = self._load_config(config_path)
         self.datasets = self._initialize_datasets()
-        self.memory_tracker = MemoryTracker(
-            enable_tracemalloc=True,
-            enable_memory_profiler=True
-        )
         
     def evaluate_single_image(self, image_path: str, ground_truth: str) -> Dict[str, Any]:
         """
@@ -61,9 +56,7 @@ class OCREvaluator:
         
         results = {}
         
-        # Track overall evaluation memory usage
-        with self.memory_tracker.track_memory_usage("evaluation_single_image") as eval_memory_info:
-            for model_name, model in self.models.items():
+        for model_name, model in self.models.items():
                 try:
                     # Perform OCR with enhanced memory tracking
                     ocr_result = model.recognize_text_with_metrics(image)
@@ -72,14 +65,12 @@ class OCREvaluator:
                     # Calculate metrics
                     metrics = calculate_all_metrics(predicted_text, ground_truth)
                     
-                    # Combine results with enhanced memory information
+                    # Combine results
                     result = {
                         'predicted_text': predicted_text,
                         'ground_truth': ground_truth,
                         'processing_time': ocr_result['processing_time'],
-                        'memory_used': ocr_result['memory_used'],
                         'success': ocr_result['success'],
-                        'memory_details': ocr_result.get('memory_details', {}),
                         **metrics
                     }
                     
@@ -93,10 +84,8 @@ class OCREvaluator:
                         'predicted_text': '',
                         'ground_truth': ground_truth,
                         'processing_time': 0.0,
-                        'memory_used': 0.0,
                         'success': False,
                         'error': str(e),
-                        'memory_details': {},
                         'cer': 1.0,
                         'wer': 1.0,
                         'accuracy': 0.0,
@@ -107,10 +96,7 @@ class OCREvaluator:
                         'length_ratio': 0.0
                     }
             
-            # Add evaluation-level memory metrics
-            eval_memory_metrics = self._extract_memory_metrics(eval_memory_info)
-            for model_name in results:
-                results[model_name]['evaluation_memory_metrics'] = eval_memory_metrics
+
         
         return results
     
@@ -138,211 +124,39 @@ class OCREvaluator:
         # Initialize results storage
         all_results = {model_name: [] for model_name in self.models.keys()}
         
-        # Track overall dataset evaluation memory usage
-        with self.memory_tracker.track_memory_usage("dataset_evaluation") as dataset_memory_info:
-            for image_file in tqdm(image_files, desc="Processing images"):
-                image_path = os.path.join(images_dir, image_file)
-                
-                # Get ground truth for this image
-                if image_file in ground_truth_data:
-                    ground_truth = ground_truth_data[image_file]
-                else:
-                    print(f"Warning: No ground truth found for {image_file}")
-                    continue
-                
-                # Evaluate all models on this image
-                results = self.evaluate_single_image(image_path, ground_truth)
-                
-                # Store results
-                for model_name, result in results.items():
-                    all_results[model_name].append(result)
+        for image_file in tqdm(image_files, desc="Processing images"):
+            image_path = os.path.join(images_dir, image_file)
             
-            # Aggregate results with enhanced memory analysis
-            aggregated_results = {}
-            for model_name, results in all_results.items():
-                if results:
-                    aggregated_results[model_name] = self._aggregate_results_with_memory(results)
-                    aggregated_results[model_name]['total_images'] = len(results)
-                    aggregated_results[model_name]['successful_images'] = sum(1 for r in results if r['success'])
+            # Get ground truth for this image
+            if image_file in ground_truth_data:
+                ground_truth = ground_truth_data[image_file]
+            else:
+                print(f"Warning: No ground truth found for {image_file}")
+                continue
             
-            # Add dataset-level memory metrics
-            dataset_memory_metrics = self._extract_memory_metrics(dataset_memory_info)
-            for model_name in aggregated_results:
-                aggregated_results[model_name]['dataset_memory_metrics'] = dataset_memory_metrics
+            # Evaluate all models on this image
+            results = self.evaluate_single_image(image_path, ground_truth)
+            
+            # Store results
+            for model_name, result in results.items():
+                all_results[model_name].append(result)
+        
+        # Aggregate results
+        aggregated_results = {}
+        for model_name, results in all_results.items():
+            if results:
+                aggregated_results[model_name] = self._aggregate_results(results)
+                aggregated_results[model_name]['total_images'] = len(results)
+                aggregated_results[model_name]['successful_images'] = sum(1 for r in results if r['success'])
         
         self.results = aggregated_results
         return aggregated_results
     
-    def _aggregate_results_with_memory(self, results: List[Dict[str, Any]]) -> Dict[str, Any]:
-        """
-        Aggregate results with enhanced memory analysis.
-        
-        Args:
-            results: List of individual result dictionaries
-            
-        Returns:
-            Aggregated results with memory analysis
-        """
-        # Basic aggregation
-        aggregated = aggregate_metrics(results)
-        
-        # Enhanced memory analysis
-        memory_metrics = self._analyze_memory_usage(results)
-        aggregated.update(memory_metrics)
-        
-        return aggregated
-    
-    def _analyze_memory_usage(self, results: List[Dict[str, Any]]) -> Dict[str, Any]:
-        """
-        Analyze memory usage patterns from results.
-        
-        Args:
-            results: List of result dictionaries with memory information
-            
-        Returns:
-            Dictionary with memory analysis
-        """
-        memory_analysis = {
-            'memory_usage_stats': {},
-            'memory_patterns': {},
-            'memory_efficiency': {}
-        }
-        
-        # Extract memory usage values
-        memory_used_values = [r.get('memory_used', 0) for r in results]
-        memory_details = [r.get('memory_details', {}) for r in results]
-        
-        if memory_used_values:
-            memory_analysis['memory_usage_stats'] = {
-                'mean_memory_used_mb': np.mean(memory_used_values),
-                'std_memory_used_mb': np.std(memory_used_values),
-                'min_memory_used_mb': np.min(memory_used_values),
-                'max_memory_used_mb': np.max(memory_used_values),
-                'median_memory_used_mb': np.median(memory_used_values)
-            }
-        
-        # Analyze memory patterns
-        positive_memory_count = sum(1 for m in memory_used_values if m > 0)
-        negative_memory_count = sum(1 for m in memory_used_values if m < 0)
-        zero_memory_count = sum(1 for m in memory_used_values if m == 0)
-        
-        memory_analysis['memory_patterns'] = {
-            'positive_memory_usage_count': positive_memory_count,
-            'negative_memory_usage_count': negative_memory_count,
-            'zero_memory_usage_count': zero_memory_count,
-            'total_samples': len(memory_used_values)
-        }
-        
-        # Calculate memory efficiency (memory per character or word)
-        total_chars = sum(len(r.get('ground_truth', '')) for r in results)
-        total_words = sum(len(r.get('ground_truth', '').split()) for r in results)
-        
-        if total_chars > 0:
-            memory_analysis['memory_efficiency'] = {
-                'memory_per_character_mb': np.mean(memory_used_values) / total_chars if total_chars > 0 else 0,
-                'memory_per_word_mb': np.mean(memory_used_values) / total_words if total_words > 0 else 0
-            }
-        
-        return memory_analysis
-    
-    def _extract_memory_metrics(self, memory_info: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Extract memory metrics from memory tracking information.
-        
-        Args:
-            memory_info: Memory tracking information
-            
-        Returns:
-            Dictionary with extracted memory metrics
-        """
-        psutil_diff = memory_info.get('psutil_diff', {})
-        tracemalloc_diff = memory_info.get('tracemalloc_diff', {})
-        
-        return {
-            'total_memory_used_mb': tracemalloc_diff.get('current_diff_mb', psutil_diff.get('rss_diff_mb', 0.0)),
-            'peak_memory_used_mb': tracemalloc_diff.get('peak_diff_mb', 0.0),
-            'psutil_rss_diff_mb': psutil_diff.get('rss_diff_mb', 0.0),
-            'psutil_vms_diff_mb': psutil_diff.get('vms_diff_mb', 0.0),
-            'duration': memory_info.get('duration', 0.0)
-        }
-    
-    def generate_memory_report(self, output_path: str) -> None:
-        """
-        Generate a detailed memory usage report.
-        
-        Args:
-            output_path: Path to save the memory report
-        """
-        report = {
-            'system_memory_info': get_system_memory_info(),
-            'model_memory_profiles': {},
-            'evaluation_memory_summary': {}
-        }
-        
-        # Get memory profiles for each model
-        for model_name, model in self.models.items():
-            report['model_memory_profiles'][model_name] = model.get_memory_profile()
-        
-        # Add evaluation memory summary
-        if self.results:
-            report['evaluation_memory_summary'] = {
-                model_name: {
-                    'avg_memory_used_mb': metrics.get('avg_memory_used', 0),
-                    'memory_usage_stats': metrics.get('memory_usage_stats', {}),
-                    'memory_patterns': metrics.get('memory_patterns', {}),
-                    'memory_efficiency': metrics.get('memory_efficiency', {})
-                }
-                for model_name, metrics in self.results.items()
-            }
-        
-        # Save report
-        with open(output_path, 'w') as f:
-            json.dump(report, f, indent=2, default=str)
-    
-    def get_memory_comparison(self) -> Dict[str, Any]:
-        """
-        Get memory usage comparison across models.
-        
-        Returns:
-            Dictionary with memory comparison data
-        """
-        if not self.results:
-            return {}
-        
-        comparison = {
-            'memory_usage_by_model': {},
-            'memory_efficiency_ranking': [],
-            'memory_patterns': {}
-        }
-        
-        # Extract memory usage by model
-        for model_name, metrics in self.results.items():
-            comparison['memory_usage_by_model'][model_name] = {
-                'avg_memory_used_mb': metrics.get('avg_memory_used', 0),
-                'memory_stats': metrics.get('memory_usage_stats', {}),
-                'memory_patterns': metrics.get('memory_patterns', {}),
-                'memory_efficiency': metrics.get('memory_efficiency', {})
-            }
-        
-        # Create memory efficiency ranking
-        efficiency_data = []
-        for model_name, data in comparison['memory_usage_by_model'].items():
-            efficiency_data.append({
-                'model_name': model_name,
-                'avg_memory_used_mb': data['avg_memory_used_mb'],
-                'memory_per_character_mb': data.get('memory_efficiency', {}).get('memory_per_character_mb', 0),
-                'memory_per_word_mb': data.get('memory_efficiency', {}).get('memory_per_word_mb', 0)
-            })
-        
-        # Sort by memory efficiency (lower is better)
-        efficiency_data.sort(key=lambda x: x['avg_memory_used_mb'])
-        comparison['memory_efficiency_ranking'] = efficiency_data
-        
-        return comparison
+
     
     def generate_report(self, output_dir: str, results: Optional[Dict[str, Any]] = None) -> str:
         """
-        Generate a comprehensive evaluation report.
+        Generate a comprehensive evaluation report with ground truth and OCR text comparisons.
         
         Args:
             output_dir: Directory to save the report
@@ -360,17 +174,213 @@ class OCREvaluator:
         # Create output directory
         os.makedirs(output_dir, exist_ok=True)
         
-        # Generate report
-        report_path = os.path.join(output_dir, 'evaluation_report.json')
+        # Check if results are aggregated (have 'total_images' key) or raw per-image results
+        is_aggregated = False
+        if results and isinstance(results, dict):
+            # Check if this looks like aggregated results
+            for model_name, model_data in results.items():
+                if isinstance(model_data, dict) and 'total_images' in model_data:
+                    is_aggregated = True
+                    break
         
-        with open(report_path, 'w') as f:
-            json.dump(results, f, indent=2)
+        if is_aggregated:
+            # Results are already aggregated, use raw results from self.results
+            raw_results = self.results
+        else:
+            # Results are raw per-image results
+            raw_results = results
+        
+        # Generate detailed report with text comparisons
+        detailed_report_path = os.path.join(output_dir, 'detailed_evaluation_report.json')
+        self._generate_detailed_report(detailed_report_path, raw_results)
         
         # Generate summary
         summary_path = os.path.join(output_dir, 'summary.txt')
-        self._generate_summary(summary_path, results)
+        self._generate_summary(summary_path, results)  # Use aggregated results for summary
         
-        return report_path
+        # Generate text comparison report
+        text_comparison_path = os.path.join(output_dir, 'text_comparison_report.txt')
+        self._generate_text_comparison_report(text_comparison_path, raw_results)
+        
+        return detailed_report_path
+    
+    def _generate_detailed_report(self, output_path: str, results: Dict[str, Any]) -> None:
+        """
+        Generate a detailed evaluation report including ground truth and predicted text.
+        
+        Args:
+            output_path: Path to save the detailed report
+            results: Evaluation results
+        """
+        detailed_results = {
+            'summary': {},
+            'detailed_results': results,
+            'text_comparisons': {}
+        }
+        
+        # Add aggregated summary
+        if results:
+            # Check if results are already aggregated
+            is_aggregated = False
+            for model_name, model_data in results.items():
+                if isinstance(model_data, dict) and 'total_images' in model_data:
+                    is_aggregated = True
+                    break
+            
+            if is_aggregated:
+                # Results are already aggregated, use them directly
+                detailed_results['summary'] = results
+            else:
+                # Results are raw, need to aggregate them
+                detailed_results['summary'] = self._aggregate_results(results)
+        
+        # Add text comparisons for each image
+        for image_name, image_results in results.items():
+            detailed_results['text_comparisons'][image_name] = {}
+            for model_name, model_result in image_results.items():
+                detailed_results['text_comparisons'][image_name][model_name] = {
+                    'ground_truth': model_result.get('ground_truth', ''),
+                    'predicted_text': model_result.get('predicted_text', ''),
+                    'cer': model_result.get('cer', 1.0),
+                    'wer': model_result.get('wer', 1.0),
+                    'processing_time': model_result.get('processing_time', 0.0),
+                    'success': model_result.get('success', False)
+                }
+        
+        with open(output_path, 'w') as f:
+            json.dump(detailed_results, f, indent=2)
+    
+    def _generate_text_comparison_report(self, output_path: str, results: Dict[str, Any]) -> None:
+        """
+        Generate a human-readable text comparison report.
+        
+        Args:
+            output_path: Path to save the text comparison report
+            results: Evaluation results
+        """
+        with open(output_path, 'w') as f:
+            f.write("OCR Text Comparison Report\n")
+            f.write("=" * 50 + "\n\n")
+            
+            # Group by model for easier comparison
+            model_names = set()
+            for image_results in results.values():
+                model_names.update(image_results.keys())
+            
+            # For each image, show all models' predictions
+            for image_name, image_results in sorted(results.items()):
+                f.write(f"Image: {image_name}\n")
+                f.write("-" * 30 + "\n")
+                
+                # Check if image_results is valid
+                if not isinstance(image_results, dict):
+                    f.write(f"Error: Invalid results format for {image_name}\n\n")
+                    continue
+                
+                # Get ground truth from first model (should be same for all)
+                ground_truth = ""
+                for model_result in image_results.values():
+                    if isinstance(model_result, dict) and 'ground_truth' in model_result:
+                        ground_truth = model_result['ground_truth']
+                        break
+                
+                f.write(f"Ground Truth: {ground_truth}\n\n")
+                
+                # Show each model's prediction
+                for model_name in sorted(model_names):
+                    if model_name in image_results:
+                        model_result = image_results[model_name]
+                        if not isinstance(model_result, dict):
+                            f.write(f"{model_name}: Error - Invalid result format\n\n")
+                            continue
+                            
+                        predicted_text = model_result.get('predicted_text', '')
+                        cer = model_result.get('cer', 1.0)
+                        wer = model_result.get('wer', 1.0)
+                        processing_time = model_result.get('processing_time', 0.0)
+                        success = model_result.get('success', False)
+                        
+                        f.write(f"{model_name}:\n")
+                        f.write(f"  Predicted: {predicted_text}\n")
+                        f.write(f"  CER: {cer:.4f}, WER: {wer:.4f}\n")
+                        f.write(f"  Processing Time: {processing_time:.4f}s\n")
+                        f.write(f"  Success: {success}\n\n")
+                
+                f.write("\n" + "=" * 50 + "\n\n")
+    
+    def generate_sample_comparisons(self, output_path: str, num_samples: int = 10) -> None:
+        """
+        Generate a report with sample text comparisons for quick analysis.
+        
+        Args:
+            output_path: Path to save the sample comparisons
+            num_samples: Number of sample images to include
+        """
+        if not self.results:
+            raise ValueError("No results available for sample generation")
+        
+        # Get sample images (first n images)
+        sample_images = list(self.results.keys())[:num_samples]
+        
+        with open(output_path, 'w') as f:
+            f.write("Sample OCR Text Comparisons\n")
+            f.write("=" * 40 + "\n\n")
+            
+            for i, image_name in enumerate(sample_images, 1):
+                f.write(f"Sample {i}: {image_name}\n")
+                f.write("-" * 30 + "\n")
+                
+                image_results = self.results[image_name]
+                
+                # Check if image_results is valid
+                if not isinstance(image_results, dict):
+                    f.write(f"Error: Invalid results format for {image_name}\n\n")
+                    continue
+                
+                # Get ground truth
+                ground_truth = ""
+                for model_result in image_results.values():
+                    if isinstance(model_result, dict) and 'ground_truth' in model_result:
+                        ground_truth = model_result['ground_truth']
+                        break
+                
+                f.write(f"Ground Truth: {ground_truth}\n\n")
+                
+                # Show predictions for each model
+                for model_name, model_result in sorted(image_results.items()):
+                    if not isinstance(model_result, dict):
+                        f.write(f"{model_name}: Error - Invalid result format\n\n")
+                        continue
+                        
+                    predicted_text = model_result.get('predicted_text', '')
+                    cer = model_result.get('cer', 1.0)
+                    wer = model_result.get('wer', 1.0)
+                    
+                    f.write(f"{model_name}:\n")
+                    f.write(f"  {predicted_text}\n")
+                    f.write(f"  CER: {cer:.4f}, WER: {wer:.4f}\n\n")
+                
+                f.write("\n" + "=" * 40 + "\n\n")
+    
+    def get_text_comparison_data(self, image_name: str = None) -> Dict[str, Any]:
+        """
+        Get text comparison data for analysis.
+        
+        Args:
+            image_name: Specific image name (if None, returns all)
+            
+        Returns:
+            Dictionary with text comparison data
+        """
+        if not self.results:
+            return {}
+        
+        if image_name:
+            if image_name not in self.results:
+                return {}
+            return {image_name: self.results[image_name]}
+        
+        return self.results
     
     def _generate_summary(self, output_path: str, results: Dict[str, Any]) -> None:
         """
@@ -393,7 +403,6 @@ class OCREvaluator:
                 f.write(f"  Successful Images: {metrics.get('successful_images', 0)}\n")
                 f.write(f"  Success Rate: {metrics.get('successful_images', 0) / metrics.get('total_images', 1) * 100:.2f}%\n")
                 f.write(f"  Average Processing Time: {metrics.get('avg_processing_time', 0):.4f}s\n")
-                f.write(f"  Average Memory Used: {metrics.get('avg_memory_used', 0):.2f}MB\n")
             
             # Accuracy metrics
             f.write("\n\nAccuracy Metrics:\n")
@@ -720,7 +729,6 @@ class OCREvaluator:
             'total_images': 0,
             'successful_images': 0,
             'processing_times': [],
-            'memory_usage': [],
             'cer_values': [],
             'wer_values': [],
             'accuracy_values': [],
@@ -744,7 +752,6 @@ class OCREvaluator:
                 
                 # Collect metrics
                 aggregated[model_name]['processing_times'].append(model_result.get('processing_time', 0))
-                aggregated[model_name]['memory_usage'].append(model_result.get('memory_used', 0))
                 aggregated[model_name]['cer_values'].append(model_result.get('cer', 1.0))
                 aggregated[model_name]['wer_values'].append(model_result.get('wer', 1.0))
                 aggregated[model_name]['accuracy_values'].append(model_result.get('accuracy', 0.0))
@@ -758,9 +765,8 @@ class OCREvaluator:
         import numpy as np
         for model_name, metrics in aggregated.items():
             if metrics['total_images'] > 0:
-                # Processing time and memory
+                # Processing time
                 metrics['avg_processing_time'] = np.mean(metrics['processing_times'])
-                metrics['avg_memory_used'] = np.mean(metrics['memory_usage'])
                 
                 # Error rates and accuracy
                 metrics['cer_mean'] = np.mean(metrics['cer_values'])

@@ -23,15 +23,45 @@ evaluate:
 # Evaluate specific datasets
 evaluate-icdar2013:
 	pipenv run python -m src.cli.main evaluate-dataset --dataset icdar2013 --output-dir data/datasets/icdar2013/results
+	pipenv run python -m src.cli.main generate-text-comparison --results-dir data/datasets/icdar2013/results --output data/datasets/icdar2013/results/text_comparison_report.txt --num-samples 20
+	pipenv run python -m src.cli.main generate-detailed-text-report --results-dir data/datasets/icdar2013/results --output data/datasets/icdar2013/results/detailed_text_report.txt
+	@echo "ICDAR 2013 evaluation completed with comparison reports generated!"
+	@echo "Note: If detailed per-image results are not available, summary reports will be generated instead."
 
 evaluate-iam:
 	pipenv run python -m src.cli.main evaluate-dataset --dataset iam --output-dir data/datasets/iam/results
+	pipenv run python -m src.cli.main generate-text-comparison --results-dir data/datasets/iam/results --output data/datasets/iam/results/text_comparison_report.txt --num-samples 20
+	pipenv run python -m src.cli.main generate-detailed-text-report --results-dir data/datasets/iam/results --output data/datasets/iam/results/detailed_text_report.txt
+	@echo "IAM evaluation completed with comparison reports generated!"
 
 evaluate-multilingual:
 	pipenv run python -m src.cli.main evaluate-dataset --dataset multilingual --output-dir data/datasets/multilingual/results
 
+# Test single image evaluation
+evaluate-test-single:
+	pipenv run python -m src.cli.main evaluate-dataset --dataset test_single --output-dir data/test_single_image/results
+	pipenv run python -m src.cli.main generate-text-comparison --results-dir data/test_single_image/results --output data/test_single_image/results/text_comparison_report.txt --num-samples 1
+	pipenv run python -m src.cli.main generate-detailed-text-report --results-dir data/test_single_image/results --output data/test_single_image/results/detailed_text_report.txt
+	@echo "Test single image evaluation completed with comparison reports generated!"
+
 # Evaluate all datasets
 evaluate-all-datasets: evaluate-icdar2013 evaluate-iam evaluate-multilingual
+
+# Generate text comparison reports
+generate-text-comparison-icdar2013:
+	pipenv run python -m src.cli.main generate-text-comparison --results-dir data/datasets/icdar2013/results --output data/datasets/icdar2013/results/text_comparison_report.txt --num-samples 20
+
+generate-text-comparison-iam:
+	pipenv run python -m src.cli.main generate-text-comparison --results-dir data/datasets/iam/results --output data/datasets/iam/results/text_comparison_report.txt --num-samples 20
+
+generate-detailed-text-report-icdar2013:
+	pipenv run python -m src.cli.main generate-detailed-text-report --results-dir data/datasets/icdar2013/results --output data/datasets/icdar2013/results/detailed_text_report.txt
+
+generate-detailed-text-report-iam:
+	pipenv run python -m src.cli.main generate-detailed-text-report --results-dir data/datasets/iam/results --output data/datasets/iam/results/detailed_text_report.txt
+
+# Generate all text comparison reports
+generate-all-text-reports: generate-text-comparison-icdar2013 generate-text-comparison-iam generate-detailed-text-report-icdar2013 generate-detailed-text-report-iam
 
 # Download dataset helper
 download-datasets:
@@ -98,10 +128,16 @@ help:
 	@echo "  check-python - Check Python version compatibility"
 	@echo "  test         - Run installation tests"
 	@echo "  evaluate     - Run OCR evaluation"
-	@echo "  evaluate-icdar2013 - Evaluate ICDAR 2013 dataset"
-	@echo "  evaluate-iam - Evaluate IAM handwriting dataset"
+	@echo "  evaluate-icdar2013 - Evaluate ICDAR 2013 dataset (with comparison reports)"
+	@echo "  evaluate-iam - Evaluate IAM handwriting dataset (with comparison reports)"
 	@echo "  evaluate-multilingual - Evaluate multilingual dataset"
+	@echo "  evaluate-test-single - Evaluate single test image (with comparison reports)"
 	@echo "  evaluate-all-datasets - Evaluate all datasets"
+	@echo "  generate-text-comparison-icdar2013 - Generate sample text comparisons for ICDAR 2013"
+	@echo "  generate-text-comparison-iam - Generate sample text comparisons for IAM"
+	@echo "  generate-detailed-text-report-icdar2013 - Generate detailed text report for ICDAR 2013"
+	@echo "  generate-detailed-text-report-iam - Generate detailed text report for IAM"
+	@echo "  generate-all-text-reports - Generate all text comparison reports"
 	@echo "  download-datasets - Download and setup datasets"
 	@echo "  example      - Run example usage"
 	@echo "  shell        - Activate virtual environment"

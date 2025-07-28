@@ -131,6 +131,15 @@ dmypy.json
 # OCR Evaluation Framework specific
 data/results/*
 !data/results/.gitkeep
+results/
+**/results/
+**/results/*
+!**/results/.gitkeep
+data/datasets/*/results/*
+!data/datasets/*/results/.gitkeep
+data/test_single_image/results/*
+!data/test_single_image/results/.gitkeep
+data/test_single_image/
 *.log
 *.png
 *.jpg
@@ -157,4 +166,6 @@ supplementary_*.md
 ENHANCED_*.md
 INSTALL_*.md
 MEMORY_*.md
-OCR_EVALUATION_*.md 
+OCR_EVALUATION_*.md
+TEXT_COMPARISON_IMPLEMENTATION.md
+test_text_comparison.py 

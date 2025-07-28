@@ -32,11 +32,11 @@ class PaddleOCR(BaseOCRModel):
         
         # Default configuration
         self.default_config = {
-            'use_textline_orientation': True,
+            'use_textline_orientation': False,
             'lang': 'en',
-            'det_db_thresh': 0.3,
-            'det_db_box_thresh': 0.5,
-            'det_db_unclip_ratio': 1.6,
+            'text_det_thresh': 0.1,
+            'text_det_box_thresh': 0.1,
+            'text_det_unclip_ratio': 2.0,
             'rec_batch_num': 6,
             'cls_batch_num': 6,
         }
@@ -55,9 +55,9 @@ class PaddleOCR(BaseOCRModel):
             self.model = PaddleOCREngine(
                 use_textline_orientation=self.default_config['use_textline_orientation'],
                 lang=self.default_config['lang'],
-                det_db_thresh=self.default_config['det_db_thresh'],
-                det_db_box_thresh=self.default_config['det_db_box_thresh'],
-                det_db_unclip_ratio=self.default_config['det_db_unclip_ratio'],
+                text_det_thresh=self.default_config['text_det_thresh'],
+                text_det_box_thresh=self.default_config['text_det_box_thresh'],
+                text_det_unclip_ratio=self.default_config['text_det_unclip_ratio'],
                 rec_batch_num=self.default_config['rec_batch_num'],
                 cls_batch_num=self.default_config['cls_batch_num']
             )
@@ -81,21 +81,28 @@ class PaddleOCR(BaseOCRModel):
         if not isinstance(image, np.ndarray):
             raise ValueError("Image must be a numpy array")
         
-        # Perform OCR
-        result = self.model.ocr(image)
+        # Perform OCR using the new API
+        result = self.model.predict(image)
         
         # Extract text from result
         if result is None or len(result) == 0:
             return ""
         
-        # PaddleOCR returns a list of lists, where each inner list contains
-        # detection results for one line of text
+        # Handle the new PaddleOCR result structure
         text_parts = []
-        for line in result:
-            if line and len(line) > 0:
-                for detection in line:
-                    if len(detection) >= 2:
-                        text_parts.append(detection[1][0])  # Extract text from detection
+        for page_result in result:
+            if isinstance(page_result, dict):
+                # New API format - extract from rec_texts
+                rec_texts = page_result.get('rec_texts', [])
+                if rec_texts:
+                    text_parts.extend(rec_texts)
+            elif isinstance(page_result, list):
+                # Old API format - extract from nested lists
+                for line in page_result:
+                    if line and len(line) > 0:
+                        for detection in line:
+                            if len(detection) >= 2:
+                                text_parts.append(detection[1][0])  # Extract text from detection
         
         return ' '.join(text_parts)
     
@@ -112,8 +119,8 @@ class PaddleOCR(BaseOCRModel):
         if not self.is_initialized:
             self.initialize()
         
-        # Perform OCR
-        result = self.model.ocr(image)
+        # Perform OCR using the new API
+        result = self.model.predict(image)
         
         if result is None or len(result) == 0:
             return {
@@ -127,25 +134,45 @@ class PaddleOCR(BaseOCRModel):
         confidences = []
         detections = []
         
-        for line in result:
-            if line and len(line) > 0:
-                for detection in line:
-                    if len(detection) >= 2:
-                        text = detection[1][0] if isinstance(detection[1], (list, tuple)) else detection[1]
-                        # Handle different confidence formats
-                        if isinstance(detection[1], (list, tuple)) and len(detection[1]) > 1:
-                            confidence = detection[1][1]
-                        else:
-                            confidence = 1.0  # Default confidence if not available
-                        bbox = detection[0]
-                        
-                        text_parts.append(text)
-                        confidences.append(confidence)
-                        detections.append({
-                            'text': text,
-                            'confidence': confidence,
-                            'bbox': bbox
-                        })
+        for page_result in result:
+            if isinstance(page_result, dict):
+                # New API format - extract from rec_texts and rec_scores
+                rec_texts = page_result.get('rec_texts', [])
+                rec_scores = page_result.get('rec_scores', [])
+                rec_boxes = page_result.get('rec_boxes', [])
+                
+                for i, text in enumerate(rec_texts):
+                    confidence = rec_scores[i] if i < len(rec_scores) else 1.0
+                    bbox = rec_boxes[i] if i < len(rec_boxes) else []
+                    
+                    text_parts.append(text)
+                    confidences.append(confidence)
+                    detections.append({
+                        'text': text,
+                        'confidence': confidence,
+                        'bbox': bbox
+                    })
+            elif isinstance(page_result, list):
+                # Old API format - extract from nested lists
+                for line in page_result:
+                    if line and len(line) > 0:
+                        for detection in line:
+                            if len(detection) >= 2:
+                                text = detection[1][0] if isinstance(detection[1], (list, tuple)) else detection[1]
+                                # Handle different confidence formats
+                                if isinstance(detection[1], (list, tuple)) and len(detection[1]) > 1:
+                                    confidence = detection[1][1]
+                                else:
+                                    confidence = 1.0  # Default confidence if not available
+                                bbox = detection[0]
+                                
+                                text_parts.append(text)
+                                confidences.append(confidence)
+                                detections.append({
+                                    'text': text,
+                                    'confidence': confidence,
+                                    'bbox': bbox
+                                })
         
         full_text = ' '.join(text_parts)
         avg_confidence = np.mean(confidences) if confidences else 0.0
@@ -197,5 +224,5 @@ class PaddleOCR(BaseOCRModel):
             det_thresh: Detection threshold
             det_box_thresh: Detection box threshold
         """
-        self.default_config['det_db_thresh'] = det_thresh
-        self.default_config['det_db_box_thresh'] = det_box_thresh 
+        self.default_config['text_det_thresh'] = det_thresh
+        self.default_config['text_det_box_thresh'] = det_box_thresh 

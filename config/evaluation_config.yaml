@@ -98,6 +98,28 @@ datasets:
       max_width: 1920
       max_height: 1080
       denoise: true
+      
+  # Test Single Image Dataset
+  test_single:
+    name: "Test Single Image"
+    description: "Single image test dataset for quick evaluation"
+    path: "data/test_single_image"
+    type: "printed"
+    languages: ["english"]
+    ground_truth_format: "txt"
+    ground_truth_file: "gt.txt"
+    supported_formats:
+      - ".png"
+      - ".jpg"
+      - ".jpeg"
+      - ".bmp"
+      - ".tiff"
+    preprocessing:
+      resize: false
+      max_width: 1920
+      max_height: 1080
+      denoise: false
+      enhance_contrast: false
       enhance_contrast: true
       
   # Synthetic Mixed-Language Dataset

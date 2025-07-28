@@ -175,6 +175,72 @@ pipenv run python -m src.cli evaluate_dataset --images-dir data/images/ --ground
 
 # Generate comparison report
 pipenv run python -m src.cli generate_report --results-dir data/results/
+
+# Generate text comparison reports
+pipenv run python -m src.cli.main generate-text-comparison --results-dir data/results/
+pipenv run python -m src.cli.main generate-detailed-text-report --results-dir data/results/
+```
+
+## Text Comparison Reports
+
+The evaluation framework now includes comprehensive text comparison functionality that shows ground truth text alongside OCR predictions for detailed analysis.
+
+### Types of Reports
+
+1. **Sample Text Comparisons**: Shows a subset of images with ground truth and OCR predictions for quick analysis
+2. **Detailed Text Reports**: Complete comparison of all images with ground truth and OCR predictions
+3. **JSON Reports**: Structured data containing all text comparisons for programmatic analysis
+
+### Generating Text Comparison Reports
+
+```bash
+# Generate sample text comparisons (20 samples by default)
+make generate-text-comparison-icdar2013
+make generate-text-comparison-iam
+
+# Generate detailed text reports (all images)
+make generate-detailed-text-report-icdar2013
+make generate-detailed-text-report-iam
+
+# Generate all text comparison reports
+make generate-all-text-reports
+
+# Using CLI directly
+pipenv run python -m src.cli.main generate-text-comparison --results-dir data/datasets/icdar2013/results --num-samples 10
+pipenv run python -m src.cli.main generate-detailed-text-report --results-dir data/datasets/iam/results
+```
+
+### Report Format
+
+Text comparison reports include:
+- **Ground Truth**: Original text that should be recognized
+- **Predicted Text**: What each OCR model actually recognized
+- **Error Metrics**: CER, WER, and other accuracy measures
+- **Performance Metrics**: Processing time and success status
+
+Example report format:
+```
+Image: sample_image_1.png
+------------------------------
+Ground Truth: Hello world, this is a test.
+
+Tesseract:
+  Predicted: Hello world, this is a test.
+  CER: 0.0000, WER: 0.0000
+  Processing Time: 0.5000s
+  Success: True
+
+PaddleOCR:
+  Predicted: Hello world this is a test
+  CER: 0.0500, WER: 0.1000
+  Processing Time: 1.2000s
+  Success: True
+
+EasyOCR:
+  Predicted: Hello world, this is a test!
+  CER: 0.0200, WER: 0.0500
+  Processing Time: 0.8000s
+  Success: True
 ```
 
 ### Dataset Evaluation
